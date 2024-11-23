@@ -20,4 +20,9 @@ public class UserController {
         User user = userService.registerUser(email, username, password);
         return ResponseEntity.ok(user);
     }
+
+    @PostMapping("/check")
+    public Boolean checkEmail(@RequestParam String email) {
+        return userService.checkEmail(email);
+    }
 }

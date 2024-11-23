@@ -26,4 +26,8 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public Boolean checkEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 }
