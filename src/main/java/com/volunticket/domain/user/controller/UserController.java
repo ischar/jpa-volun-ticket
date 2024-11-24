@@ -1,13 +1,11 @@
 package com.volunticket.domain.user.controller;
 
+import com.volunticket.domain.user.dto.LoginDto;
 import com.volunticket.domain.user.entity.User;
 import com.volunticket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -24,5 +22,11 @@ public class UserController {
     @PostMapping("/check")
     public Boolean checkEmail(@RequestParam String email) {
         return userService.checkEmail(email);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+        String token = userService.login(loginDto.getEmail(), loginDto.getPassword());
+        return ResponseEntity.ok(token);
     }
 }

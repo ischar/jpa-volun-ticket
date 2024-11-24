@@ -2,7 +2,9 @@ package com.volunticket.domain.user.service;
 
 import com.volunticket.domain.user.entity.User;
 import com.volunticket.domain.user.exception.UserAlreadyExistsException;
+import com.volunticket.domain.user.exception.UserNotFoundException;
 import com.volunticket.domain.user.repository.UserRepository;
+import com.volunticket.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User registerUser(String email, String username, String password) {
@@ -29,5 +32,16 @@ public class UserService {
 
     public Boolean checkEmail(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public String login(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("사용자가 없습니다."));
+        if (passwordEncoder.matches(password, user.getPassword()) && user.getEmail().equals(email)) {
+            String token = jwtUtil.generateToken(email);
+            return token;
+        }
+
+        return null;
     }
 }
