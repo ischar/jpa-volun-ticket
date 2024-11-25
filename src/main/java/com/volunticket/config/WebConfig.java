@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${client.url}")
     private String clientUrl;
 
-    public void addCorsMapping(CorsRegistry registry) {
+    public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(clientUrl)
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
