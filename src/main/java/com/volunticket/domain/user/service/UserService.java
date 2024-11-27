@@ -5,6 +5,7 @@ import com.volunticket.domain.user.exception.UserAlreadyExistsException;
 import com.volunticket.domain.user.exception.UserNotFoundException;
 import com.volunticket.domain.user.repository.UserRepository;
 import com.volunticket.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,12 @@ public class UserService {
         }
 
         return null;
+    }
+
+    public User login(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("사용자가 없습니다."));
+
+        return user;
     }
 }
