@@ -52,4 +52,12 @@ public class UserService {
 
         return user;
     }
+
+    public Boolean checkToken(String token) {
+        return jwtUtil.validateToken(token);
+    }
+
+    public String extractEmail(String token) {
+        return jwtUtil.extractEmail(token);
+    }
 }

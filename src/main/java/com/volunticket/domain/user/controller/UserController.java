@@ -2,11 +2,13 @@ package com.volunticket.domain.user.controller;
 
 import com.volunticket.domain.user.dto.LoginDto;
 import com.volunticket.domain.user.dto.UserDto;
+import com.volunticket.domain.user.dto.UserInfoDto;
 import com.volunticket.domain.user.entity.User;
 import com.volunticket.domain.user.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,5 +48,26 @@ public class UserController {
                 .build();
 
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping("/check-token")
+    public ResponseEntity<?> checkToken(@CookieValue("access_token") String token) {
+        try {
+            Boolean isTokenValid = userService.checkToken(token);
+
+            if (!isTokenValid) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+            }
+            String email = userService.extractEmail(token);
+            User user = userService.login(email);
+            UserInfoDto userInfoDto = UserInfoDto.builder()
+                            .username(user.getUsername())
+                            .email(user.getEmail())
+                            .build();
+
+            return ResponseEntity.ok(userInfoDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("에러가 발생했습니다.");
+        }
     }
 }
