@@ -22,9 +22,10 @@ public class PostController {
             @RequestParam("user") String username,
             @RequestParam("category") PostType category,
             @RequestParam("maxParticipants") Integer maxParticipants,
-            @RequestParam(value = "images", required = false)MultipartFile image
+            @RequestParam("recruitmentPeriod") String recruitmentPeriod,
+            @RequestParam(value = "images", required = false) MultipartFile image
     ) throws IOException {
-        postService.createPost(title, content, username, category, maxParticipants, image);
+        postService.createPost(title, content, username, category, maxParticipants, recruitmentPeriod, image);
         return ResponseEntity.ok("success!");
     }
 }
