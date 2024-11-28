@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -34,14 +37,14 @@ public class Post {
     private String author;
 
     @Column(nullable = false)
-    private int currentParticipants;
+    private Integer currentParticipants;
 
     @Column(nullable = false)
-    private int maxParticipants; // 모집 인원
+    private Integer maxParticipants; // 모집 인원
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate recruitmentPeriod; // 모집 기간
 
-    @Column(nullable = false)
+    @CreatedDate // Spring Data JPA에서 자동으로 생성 시간 설정
     private LocalDate createdDate; // 작성일
 }

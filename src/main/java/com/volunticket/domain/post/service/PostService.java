@@ -18,7 +18,7 @@ public class PostService {
     private final S3Service s3Service;
 
     @Transactional
-    public void createPost(String title, String content, String email, PostType type, MultipartFile image) throws IOException {
+    public void createPost(String title, String content, String email, PostType type, Integer maxParticipants, MultipartFile image) throws IOException {
 
         String imageUrl = null;
 
@@ -32,6 +32,8 @@ public class PostService {
                 .author(email)
                 .type(type)
                 .image(imageUrl)
+                .maxParticipants(maxParticipants)
+                .currentParticipants(0)
                 .build();
 
         postRepository.save(post);
