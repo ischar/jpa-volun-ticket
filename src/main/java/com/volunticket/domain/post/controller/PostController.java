@@ -33,10 +33,15 @@ public class PostController {
         return ResponseEntity.ok("success!");
     }
 
-    @GetMapping("posts")
+    @GetMapping("posts/{type}")
     public ResponseEntity<List<Post>> getPosts(@PathVariable("type") String type, @RequestParam("email") String email) {
-        System.out.println(type);
         Optional<List<Post>> postList = postService.getPosts(type, email);
         return postList.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("posts/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id) {
+        postService.deletePost(id);
+        return ResponseEntity.noContent().build();
     }
 }

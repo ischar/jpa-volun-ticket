@@ -2,6 +2,7 @@ package com.volunticket.domain.post.service;
 
 import com.volunticket.domain.post.entity.Post;
 import com.volunticket.domain.post.entity.PostType;
+import com.volunticket.domain.post.exception.PostNotFoundException;
 import com.volunticket.domain.post.repository.PostRepository;
 import com.volunticket.util.DateUtil;
 import jakarta.transaction.Transactional;
@@ -50,5 +51,12 @@ public class PostService {
         PostType postType = PostType.valueOf(type.toUpperCase());
         Optional<List<Post>> postList = postRepository.findByTypeAndAuthor(postType, email);
         return postList;
+    }
+
+    public void deletePost(Long id) {
+
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException("게시글이 존재하지 않습니다."));
+        postRepository.delete(post);
     }
 }
