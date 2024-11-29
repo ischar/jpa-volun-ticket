@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -45,4 +46,9 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public Optional<List<Post>> getPosts(String type, String email) {
+        PostType postType = PostType.valueOf(type.toUpperCase());
+        Optional<List<Post>> postList = postRepository.findByTypeAndAuthor(postType, email);
+        return postList;
+    }
 }

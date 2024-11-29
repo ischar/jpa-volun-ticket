@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Optional<List<Post>> findByType(PostType type);
+    Optional<List<Post>> findByTypeAndAuthor(PostType type, String email);
 }

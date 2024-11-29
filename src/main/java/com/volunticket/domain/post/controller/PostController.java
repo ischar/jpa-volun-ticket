@@ -1,5 +1,7 @@
 package com.volunticket.domain.post.controller;
 
+import com.amazonaws.Response;
+import com.volunticket.domain.post.entity.Post;
 import com.volunticket.domain.post.entity.PostType;
 import com.volunticket.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/post")
@@ -27,5 +31,12 @@ public class PostController {
     ) throws IOException {
         postService.createPost(title, content, username, category, maxParticipants, recruitmentPeriod, image);
         return ResponseEntity.ok("success!");
+    }
+
+    @GetMapping("posts")
+    public ResponseEntity<List<Post>> getPosts(@PathVariable("type") String type, @RequestParam("email") String email) {
+        System.out.println(type);
+        Optional<List<Post>> postList = postService.getPosts(type, email);
+        return postList.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
