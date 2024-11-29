@@ -59,4 +59,9 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException("게시글이 존재하지 않습니다."));
         postRepository.delete(post);
     }
+
+    public Optional<Post> getPost(Long id) {
+        Optional<Post> post = postRepository.findById(id);
+        return post;
+    }
 }

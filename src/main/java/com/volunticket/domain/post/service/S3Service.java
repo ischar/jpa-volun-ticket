@@ -25,9 +25,7 @@ public class S3Service {
 
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
-        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), null)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), null));
         return amazonS3.getUrl(bucketName, fileName).toString();
     }
 
